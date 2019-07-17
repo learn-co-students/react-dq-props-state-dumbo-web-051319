@@ -5,13 +5,19 @@ import SunBaby from './assets/sun-eyes.png'
 import BlueBaby from './assets/blue-eyes.png'
 import GlowingBaby from './assets/glowing-eyes.png'
 
-// is there a way we could associate eye color string values with images? 
+// is there a way we could associate eye color string values with images?
 // perhaps so we could do something along the lines of `eyeColorMapper['blue'] and get back the right image?`
 
 export default class BabyHog extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      name: props.name,
+      hobby: props.hobby,
+      color: props.eyeColor,
+      weight:100
+    }
   }
 
   changeWeight = (e) => {
@@ -22,25 +28,46 @@ export default class BabyHog extends Component {
     })
   }
 
+  changeEyeColor = () => {
+    let newColor = this.props.color
+    this.setState({
+      color: newColor
+    })
+  }
+
+  getEyeColor = (color) => {
+    let babyColor = ""
+    if (this.state.color === "blue"){
+      babyColor = BlueBaby
+    } else if (this.state.color === "sun") {
+      babyColor = SunBaby
+    } else if (this.state.color === "glowing") {
+      babyColor = GlowingBaby
+    } else {
+      babyColor = normalBaby
+    }
+    return babyColor
+  }
+
   render() {
     return (
       <li className="hogbabies">
-        <h1>Name</h1>
-        <h3>Weight:</h3>
-        <h3>Hobby:</h3>
-        <h4>Eye Color:</h4>
-          
-        <Button name="+">
+        <h1>{this.state.name}</h1>
+        <h3>Weight:{this.state.weight}</h3>
+        <h3>Hobby:{this.state.hobby}</h3>
+        <h4>Eye Color: {this.state.color}</h4>
+
+        <Button onClick={this.changeWeight} name="+">
           Increase Weight
         </Button>
-        <Button name="-">
+        <Button onClick={this.changeWeight} name="-">
           Decrease Weight
         </Button>
 
         <div className="hb-wrap">
-          <img src={normalBaby} style={{height: '200px'}} alt="MasterBlasterJrJr" />
+          <img src={this.getEyeColor(this.state.color)} style={{height: '200px'}} alt="MasterBlasterJrJr" />
         </div>
-        
+
       </li>
     )
   }
